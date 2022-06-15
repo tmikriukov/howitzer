@@ -1,5 +1,6 @@
 require 'json'
 require 'rest-client'
+require 'nokogiri'
 
 module Howitzer
   module MailtrapApi
@@ -30,6 +31,22 @@ module Howitzer
 
       def find_attachments(message)
         JSON.parse(RestClient.get("#{BASE_URL}/messages/#{message['id']}/attachments", 'Api-Token' => @api_token))
+      end
+
+      # Return plain text body for message
+      #
+      # @param message [Hash] which body should be extracted
+      # @return [String] returns plain text body of message
+      def get_plain_text_body(message)
+        return RestClient.get("#{BASE_URL}/messages/#{message['id']}/body.txt", 'Api-Token' => @api_token)
+      end
+
+      # Return HTML body for message
+      #
+      # @param message [Hash] which body should be extracted
+      # @return [String] returns HTML body of message
+      def get_html_body(message)
+        return RestClient.get("#{BASE_URL}/messages/#{message['id']}/body.html", 'Api-Token' => @api_token)
       end
 
       private

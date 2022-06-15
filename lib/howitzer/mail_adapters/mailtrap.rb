@@ -24,19 +24,19 @@ module Howitzer
       # @return [String] plain text body of the email message
 
       def plain_text_body
-        message['text_body']
+        retrieve_plain_text_body(message)
       end
 
       # @return [String] html body of the email message
 
       def html_body
-        message['html_body']
+        retrieve_html_body(message)
       end
 
       # @return [String] stripped text
 
       def text
-        message['text_body']
+        retrieve_plain_text_body(message)
       end
 
       # @return [String] an email address specified in `From` field
@@ -102,6 +102,14 @@ module Howitzer
 
       def retrieve_attachments(message)
         Howitzer::MailtrapApi::Client.new.find_attachments(message)
+      end
+
+      def retrieve_plain_text_body(message)
+        Howitzer::MailtrapApi::Client.new.get_plain_text_body(message)
+      end
+
+      def retrieve_html_body(message)
+        Howitzer::MailtrapApi::Client.new.get_html_body(message)
       end
     end
   end
